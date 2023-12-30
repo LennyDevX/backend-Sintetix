@@ -8,7 +8,7 @@ dotenv.config(); // Configura tus variables de entorno
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5174' })); // Permite que el servidor reciba peticiones de otros dominios
+app.use(cors({ origin: 'http://localhost:5173' })); // Permite que el servidor reciba peticiones de otros dominios
 
 app.use(express.json()); // Permite que el servidor entienda los JSON
 
