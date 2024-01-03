@@ -1,9 +1,8 @@
 // Description: Rutas de la API
 import express from 'express';
-import User from './models/user.js';
+import User from '../models/user.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import hamlet from 'hamlet';
 import { check, validationResult } from 'express-validator';
 
 
@@ -25,7 +24,7 @@ router.get('/users', async (_, res) => {
 });
 
 // Registro de usuarios
-const { check, validationResult } = require('express-validator');
+// const { check, validationResult } = require('express-validator');
 const rateLimit = require("express-rate-limit");
 
 // Limita a 5 intentos de registro por hora por IP
@@ -72,8 +71,8 @@ router.post('/register', registerLimiter, [
 });
 
 // Login de usuarios
-const { check, validationResult } = require('express-validator');
-const rateLimit = require("express-rate-limit");
+// const { check, validationResult } = require('express-validator');
+// const rateLimit = require("express-rate-limit");
 
 // Limita a 5 intentos de inicio de sesión por hora por IP
 const loginLimiter = rateLimit({
