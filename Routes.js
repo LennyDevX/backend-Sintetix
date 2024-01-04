@@ -1,23 +1,23 @@
 // Description: Rutas de la API
 import express from 'express';
-import User from './models/user.js';
+import User from '../backend-Sintetix/model/user.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import hamlet from 'hamlet';
 import { check, validationResult } from 'express-validator';
+import rateLimit from "express-rate-limit";
 
 
 const router = express.Router();
 
 // Ruta principal
-router.get('/', (req, res) => {
+router.get('/', (_, res) => {
   res.send('Bienvenido a la página principal de mi aplicación');
 });
 
 // Lista de Usuarios Base de Datos
-router.get('/users', async (_, res) => {
+router.get('/users', async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().limit(100); // Aumenta este número según sea necesario
         res.json(users);
     } catch (error) {
         res.status(500).json({ error: 'Ocurrió un error al obtener los usuarios.' });
@@ -25,8 +25,6 @@ router.get('/users', async (_, res) => {
 });
 
 // Registro de usuarios
-const { check, validationResult } = require('express-validator');
-const rateLimit = require("express-rate-limit");
 
 // Limita a 5 intentos de registro por hora por IP
 const registerLimiter = rateLimit({
@@ -72,8 +70,6 @@ router.post('/register', registerLimiter, [
 });
 
 // Login de usuarios
-const { check, validationResult } = require('express-validator');
-const rateLimit = require("express-rate-limit");
 
 // Limita a 5 intentos de inicio de sesión por hora por IP
 const loginLimiter = rateLimit({
@@ -111,7 +107,6 @@ router.post('/login', loginLimiter, [
     res.json({ token, user });
 });
 
-// Agregar seguridad con hamlet
-router.use(hamlet());
+
 
 export default router;
