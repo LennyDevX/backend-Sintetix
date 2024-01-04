@@ -1,25 +1,21 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import routes from './routes/Routes.js';
 
-// Importar Rutas
-import routes from "./routes/indexRoutes.js"
+dotenv.config(); // Configura tus variables de entorno
 
-// Inicializar app
 const app = express();
 
-// Ruta absoluta del directorio actual
-const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use(cors({ origin: 'http://localhost:5173' })); // Permite que el servidor reciba peticiones de otros dominios
 
-// Middlewares
-app.use(express.json())
+app.use(express.json()); // Permite que el servidor entienda los JSON
 
-// Rutas
-app.use(routes)
+mongoose.connect(process.env.MONGODB_URI) // Conecta con tu base de datos
+    .then(() => console.log('MongoDB Connected...'))
+    .catch(err => console.log(err));
 
-// Inicializar server
-app.listen(process.env.PORT, () => {
-    console.log(`Server running on http://${process.env.HOST}:${process.env.PORT}`)
-})
+app.use('/', routes);
+
+app.listen(3000, () => console.log('Server running on port 3000'));
