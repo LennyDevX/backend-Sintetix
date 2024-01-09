@@ -1,10 +1,8 @@
 // Description: Rutas de la API
 import express from 'express';
-import User from './models/user.js';
+import User from '../models/user.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import hamlet from 'hamlet';
-import { check, validationResult } from 'express-validator';
 
 
 const router = express.Router();

@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import routes from './Routes.js';
+import routes from './routes/Routes.js';
 
 dotenv.config(); // Configura tus variables de entorno
 
