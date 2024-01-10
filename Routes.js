@@ -1,21 +1,35 @@
 // Description: Rutas de la API
 import express from 'express';
+const router = express.Router();
 import User from '../backend-Sintetix/model/user.js';
+import BlogPost from '../backend-Sintetix/model/blogPost.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import bodyParser from 'body-parser';
 import { check, validationResult } from 'express-validator';
 import rateLimit from "express-rate-limit";
 
-
-const router = express.Router();
+// Aquí es donde usas body-parser
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 
 // Ruta principal
 router.get('/', (_, res) => {
   res.send('Bienvenido a la página principal de mi aplicación');
 });
 
+// lista de posts
+router.get('/blog', async (_, res) => {
+    try {
+        const BlogPosts = await BlogPost.find().limit(100);
+        res.json(BlogPosts);
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al obtener las publicaciones del blog. Por favor, inténtalo de nuevo.' });
+    }
+});
+
 // Lista de Usuarios Base de Datos
-router.get('/users', async (req, res) => {
+router.get('/users', async (_, res) => {
     try {
         const users = await User.find().limit(100); // Aumenta este número según sea necesario
         res.json(users);
@@ -23,6 +37,21 @@ router.get('/users', async (req, res) => {
         res.status(500).json({ error: 'Ocurrió un error al obtener los usuarios.' });
     }
 });
+
+// Crear una nueva publicación de blog
+router.post('/blog', async (req, res) => {
+    const { title, content } = req.body;
+
+    const newBlogPost = new BlogPost({ title, content });
+
+    try {
+        const savedBlogPost = await newBlogPost.save();
+        res.json({ message: '¡Publicación de blog creada con éxito!', blogpost: savedBlogPost });
+    } catch (error) {
+        res.status(500).json({ error: 'Ocurrió un error al crear la publicación del blog. Por favor, inténtalo de nuevo.' });
+    }
+});
+
 
 // Registro de usuarios
 
